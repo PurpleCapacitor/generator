@@ -46,9 +46,16 @@ public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
 		ProjectOptions.getProjectOptions().getGeneratorOptions().put("SpringModelGenerator", springModelOptions);
 		
 		GeneratorOptions springRepoOptions = new GeneratorOptions("c:/temp", "springRepository", "templates", "{0}Repository.java",
-				true, "repositories");
+				true, "repository");
 		springRepoOptions.setTemplateDir(pluginDir + File.separator + springRepoOptions.getTemplateDir());
 		ProjectOptions.getProjectOptions().getGeneratorOptions().put("SpringRepoGenerator", springRepoOptions);
+		
+		GeneratorOptions springServiceOptions = new GeneratorOptions("c:/temp", "springService", "templates", "{0}Service.java",
+				true, "service");
+		springServiceOptions.setTemplateDir(pluginDir + File.separator + springServiceOptions.getTemplateDir());
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("SpringServiceGenerator", springServiceOptions);
+		
+		//<#list properties as property> public List<${class.name}> findAll${class.name}(); public ${class.name} findOne(${property.type} ${property.name}); public ${class.name} save${class.name}(${class.name} ${class.name?lower_case}); public ${class.name} delete${class.name}(Long id); </#list>
 	}
 
 	private NMAction[] getSubmenuActions() {
