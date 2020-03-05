@@ -64,6 +64,10 @@ class GenerateAction extends MDAction {
 			GeneratorOptions go3 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("SpringServiceGenerator");
 			SpringGenerator springServiceGenerator = new SpringGenerator(go3);
 			springServiceGenerator.generate();
+			
+			GeneratorOptions go4 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("SpringControllerGenerator");
+			SpringGenerator springControllerGenerator = new SpringGenerator(go4);
+			springControllerGenerator.generate();
 
 			JOptionPane.showMessageDialog(null, "Code is successfully generated! Generated code is in folder: "
 					+ go1.getOutputPath() + ", package: " + go1.getFilePackage());
