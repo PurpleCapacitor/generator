@@ -16,12 +16,14 @@ public class FMClass extends FMType {
 	//list of packages (for import declarations) 
 	private List<String> importedPackages = new ArrayList<String>();
 	
+	private boolean isAbstract;
 	/** @ToDo: add list of methods */
 	
 	
-	public FMClass(String name, String classPackage, String visibility) {
+	public FMClass(String name, String classPackage, String visibility, boolean isAbstract) {
 		super(name, classPackage);		
 		this.visibility = visibility;
+		this.isAbstract = isAbstract;
 	}	
 	
 	public List<FMProperty> getProperties(){
@@ -62,6 +64,14 @@ public class FMClass extends FMType {
 
 	public void setVisibility(String visibility) {
 		this.visibility = visibility;
+	}
+
+	public boolean isAbstract() {
+		return isAbstract;
+	}
+
+	public void setAbstract(boolean isAbstract) {
+		this.isAbstract = isAbstract;
 	}	
 
 	

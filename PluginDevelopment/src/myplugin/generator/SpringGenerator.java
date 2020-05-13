@@ -19,7 +19,7 @@ public class SpringGenerator extends BasicGenerator {
 		super(generatorOptions);
 	}
 
-	public void generate() {
+	public void generate(boolean isModelPackage) {
 
 		try {
 			super.generate();
@@ -29,7 +29,11 @@ public class SpringGenerator extends BasicGenerator {
 
 		List<FMClass> classes = FMModel.getInstance().getClasses();
 		for (int i = 0; i < classes.size(); i++) {
+			
 			FMClass cl = classes.get(i);
+			if(cl.isAbstract() && !isModelPackage) {
+				continue;
+			}
 			Writer out;
 			Map<String, Object> context = new HashMap<String, Object>();
 			try {

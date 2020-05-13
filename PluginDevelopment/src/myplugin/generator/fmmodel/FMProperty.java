@@ -12,6 +12,8 @@ public class FMProperty extends FMElement {
 	private boolean id;
 	private Boolean association;
 	private String aggregationKind;
+	private Integer oppositeUpper;
+	private Integer oppositeLower;
 
 	/**
 	 * @ToDo: Add length, precision, unique... whatever is needed for ejb class
@@ -20,7 +22,7 @@ public class FMProperty extends FMElement {
 	 */
 
 	public FMProperty(String name, String type, String visibility, Integer lower, Integer upper, Boolean association,
-			String aggregationKind, boolean id) {
+			String aggregationKind, boolean id, Integer oppositeUpper, Integer oppositeLower) {
 		super(name);
 		this.type = type;
 		this.visibility = visibility;
@@ -29,6 +31,8 @@ public class FMProperty extends FMElement {
 		this.association = association;
 		this.aggregationKind = aggregationKind;
 		this.id = id;
+		this.oppositeLower = oppositeLower;
+		this.oppositeUpper = oppositeUpper;
 	}
 
 	/*
@@ -39,6 +43,22 @@ public class FMProperty extends FMElement {
 
 	public String getType() {
 		return type;
+	}
+
+	public Integer getOppositeUpper() {
+		return oppositeUpper;
+	}
+
+	public void setOppositeUpper(Integer oppositeUpper) {
+		this.oppositeUpper = oppositeUpper;
+	}
+
+	public Integer getOppositeLower() {
+		return oppositeLower;
+	}
+
+	public void setOppositeLower(Integer oppositeLower) {
+		this.oppositeLower = oppositeLower;
 	}
 
 	public void setType(String type) {

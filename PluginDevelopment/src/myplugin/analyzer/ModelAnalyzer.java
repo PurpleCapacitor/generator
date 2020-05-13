@@ -3,6 +3,8 @@ package myplugin.analyzer;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import myplugin.generator.fmmodel.FMClass;
 import myplugin.generator.fmmodel.FMEnumeration;
 import myplugin.generator.fmmodel.FMModel;
@@ -102,7 +104,7 @@ public class ModelAnalyzer {
 		if (cl.getName() == null)
 			throw new AnalyzeException("Classes must have names!");
 
-		FMClass fmClass = new FMClass(cl.getName(), packageName, cl.getVisibility().toString());
+		FMClass fmClass = new FMClass(cl.getName(), packageName, cl.getVisibility().toString(), cl.isAbstract());
 		Iterator<Property> it = ModelHelper.attributes(cl);
 		while (it.hasNext()) {
 			Property p = it.next();
@@ -127,9 +129,11 @@ public class ModelAnalyzer {
 		String typeName = attType.getName();
 		if (typeName == null)
 			throw new AnalyzeException("Type ot the property " + cl.getName() + "." + p.getName() + " must have name!");
-
+		
 		int lower = p.getLower();
 		int upper = p.getUpper();
+		int oppositeLower = 0;
+		int oppositeUpper = 0;
 		boolean association = false;
 		String aggregationKind = "none";
 		boolean id = false;
@@ -139,12 +143,14 @@ public class ModelAnalyzer {
 		}
 
 		if (p.getAssociation() != null) {
+			oppositeLower = p.getOpposite().getLower();
+			oppositeUpper = p.getOpposite().getUpper();
 			association = true;
 			aggregationKind = p.getAggregation().toString().toLowerCase();
 		}
 
 		FMProperty prop = new FMProperty(attName, typeName, p.getVisibility().toString(), lower, upper, association,
-				aggregationKind, id);
+				aggregationKind, id, oppositeUpper, oppositeLower);
 		return prop;
 	}
 

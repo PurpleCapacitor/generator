@@ -1,4 +1,4 @@
-package ${class.typePackage}.repository;
+package ${class.typePackage}.repository.base;
 
 import java.util.List;
 
@@ -7,17 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import ${class.typePackage}.model.${class.name};
 
-@Repository
-public interface ${class.name}Repository extends JpaRepository<${class.name}, Long> {
+<#list properties as property>
+		<#if property.id>
+public interface ${class.name}RepositoryBase extends JpaRepository<${class.name}, ${property.type?cap_first}> {
 
-	<#list properties as property>
-		<#if property.upper == 1>
-			<#if property.association == false> 
-	List<${class.name}> findBy${property.name?cap_first}(${property.type} ${property.name});
-			<#elseif property.association == true>
-	List<${class.name}> findBy${property.type}Id(Long id);
-			</#if>
+}		
 		</#if>
- 	</#list>
-
-}
+</#list>
