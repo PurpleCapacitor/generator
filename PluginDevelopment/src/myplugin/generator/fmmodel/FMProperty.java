@@ -14,6 +14,8 @@ public class FMProperty extends FMElement {
 	private String aggregationKind;
 	private Integer oppositeUpper;
 	private Integer oppositeLower;
+	private String fetchType = "";
+
 
 	/**
 	 * @ToDo: Add length, precision, unique... whatever is needed for ejb class
@@ -111,5 +113,13 @@ public class FMProperty extends FMElement {
 
 	public void setId(boolean id) {
 		this.id = id;
+	}
+
+	public String getFetchType() {
+		return fetchType;
+	}
+
+	public void setFetchType(String fetchType) {
+		this.fetchType = fetchType;
 	}
 }

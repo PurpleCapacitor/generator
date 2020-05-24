@@ -1,5 +1,6 @@
 package myplugin.analyzer;
 
+import java.awt.Component;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,6 +20,8 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Enumeration;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Type;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.impl.EnumerationLiteralImpl;
+import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 
 /**
  * Model Analyzer takes necessary metadata from the MagicDraw model and puts it
@@ -112,12 +115,45 @@ public class ModelAnalyzer {
 			fmClass.addProperty(prop);
 		}
 
-		/**
-		 * @ToDo: Add import declarations etc.
-		 */
+		Stereotype CRUDGenerateStereotype = StereotypesHelper.getAppliedStereotypeByString(cl, "CRUDGenerate");
+		
+		if(CRUDGenerateStereotype != null) {
+			
+			Boolean create = true;
+			Boolean read = true;
+			Boolean update = true;
+			Boolean delete = true;
+
+			
+			List<Property> tags = CRUDGenerateStereotype.getOwnedAttribute();
+			
+	        for (int i = 0; i < tags.size(); i++)
+	        {
+	        	Property tagDef = tags.get(i);
+	        	String tagName = tagDef.getName();
+	        	
+	        	List value = StereotypesHelper.getStereotypePropertyValue(cl, CRUDGenerateStereotype, tagName);
+	        	
+	        	if(value.size() > 0) {
+	        	
+	        		switch(tagName) {	            	
+		        		case "create" : create = (Boolean) value.get(0); break;
+		        		case "read" : read = (Boolean) value.get(0); break;
+			            case "update" : update = (Boolean) value.get(0); break;
+			            case "delete" : delete = (Boolean) value.get(0); break;
+		            }
+	        	}
+	        }
+	        fmClass.setCreate(create);
+	        fmClass.setRead(read);
+	        fmClass.setUpdate(update);
+	        fmClass.setDelete(delete);	        
+		}
+		
+		
 		return fmClass;
 	}
-
+	
 	private FMProperty getPropertyData(Property p, Class cl) throws AnalyzeException {
 		String attName = p.getName();
 		if (attName == null)
@@ -151,6 +187,29 @@ public class ModelAnalyzer {
 
 		FMProperty prop = new FMProperty(attName, typeName, p.getVisibility().toString(), lower, upper, association,
 				aggregationKind, id, oppositeUpper, oppositeLower);
+		
+		Stereotype FetchTypeStereotype = StereotypesHelper.getAppliedStereotypeByString(p, "FetchType");
+		
+		if(FetchTypeStereotype != null) {
+			
+			String fetchType = "LAZY";
+			
+			List<Property> tags = FetchTypeStereotype.getOwnedAttribute();
+			
+	        for (int i = 0; i < tags.size(); i++)
+	        {
+	        	Property tagDef = tags.get(i);
+	        	String tagName = tagDef.getName();
+	        	
+	        	List value = StereotypesHelper.getStereotypePropertyValue(p, FetchTypeStereotype, tagName);
+	        	if(value.size() > 0) {
+	        		switch(tagName) {	        			
+		        		case "fetchType" : fetchType = (String) ((EnumerationLiteralImpl) value.get(0)).getName(); break;
+		            }
+	        	}
+	        }
+	        prop.setFetchType(fetchType.toString());
+		}
 		return prop;
 	}
 

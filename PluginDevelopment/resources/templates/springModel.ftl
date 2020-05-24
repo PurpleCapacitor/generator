@@ -33,7 +33,7 @@ ${class.visibility} class ${class.name} {
 	<#if property.upper == 1 >   
 		<#if property.association == true>
 			<#if property.oppositeUpper == -1 >
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.${property.fetchType})
 			<#else>
 	@OneToOne
 			</#if>
@@ -52,9 +52,9 @@ ${class.visibility} class ${class.name} {
     <#elseif property.upper == -1 > 
     	<#if property.association == true>
     	<#if property.oppositeUpper == -1>
-    @ManyToMany(fetch=FetchType.LAZY)
+    @ManyToMany(fetch=FetchType.${property.fetchType})
     	<#else>
-    @OneToMany(fetch=FetchType.LAZY)    
+    @OneToMany(fetch=FetchType.${property.fetchType})    
     	</#if>
 	${property.visibility} List<${property.type}> ${property.name} = new ArrayList<${property.type}>();
 		</#if>

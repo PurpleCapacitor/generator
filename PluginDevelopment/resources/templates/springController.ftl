@@ -25,6 +25,7 @@ public class ${class.name}ControllerBase {
 	@Autowired
 	public ${class.name}Converter ${class.name?uncap_first}Converter;
 	
+	<#if class.read>
 	@RequestMapping(value="get${class.name}s", method=RequestMethod.GET)
 	public ResponseEntity<List<${class.name}DTO>> get${class.name}s(){
 		List<${class.name}> ${class.name?uncap_first}s = ${class.name?uncap_first}Service.findAll();
@@ -33,18 +34,24 @@ public class ${class.name}ControllerBase {
 			${class.name?uncap_first}sDTO.add(${class.name?uncap_first}Converter.entityToDto(${class.name?uncap_first}));
 		}
 		return new ResponseEntity<>(${class.name?uncap_first}sDTO, HttpStatus.OK);		
-	}	
+	}
+	</#if>	
 	
+	<#if class.create>
 	@RequestMapping(method=RequestMethod.POST, consumes="application/json")
 	public ResponseEntity<${class.name}DTO> add${class.name}(@RequestBody ${class.name}DTO ${class.name?uncap_first}DTO){
 			
 		${class.name} new${class.name} = ${class.name?uncap_first}Service.save${class.name}(${class.name?uncap_first}DTO);
 		return new ResponseEntity<>(${class.name?uncap_first}Converter.entityToDto(new${class.name}), HttpStatus.OK);
 	}
-
+	</#if>
+	
+	<#if class.read>
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	</#if>
 	<#list properties as property>
 		<#if property.id>
+			<#if class.read>
 	public ResponseEntity<${class.name}DTO> get${class.name}(@PathVariable ${property.type} id) {
 		${class.name} ${class.name?uncap_first} = ${class.name?uncap_first}Service.findOne(id);
 		if (${class.name?uncap_first} == null) {
@@ -53,18 +60,23 @@ public class ${class.name}ControllerBase {
 
 		return new ResponseEntity<>(${class.name?uncap_first}Converter.entityToDto(${class.name?uncap_first}), HttpStatus.OK);
 	}
+			</#if>
 	
+			<#if class.delete>
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<${class.name}DTO> delete(@PathVariable ${property.type} id) {
-		${class.name} deleted = ${class.name?uncap_first}Service.delete${class.name}(id);
-		return new ResponseEntity<>(${class.name?uncap_first}Converter.entityToDto(deleted), HttpStatus.OK);
+	public ResponseEntity<Boolean> delete(@PathVariable ${property.type} id) {
+		Boolean deleted = ${class.name?uncap_first}Service.delete${class.name}(id);
+		return new ResponseEntity<>(deleted, HttpStatus.OK);
 	}
+			</#if>
 		</#if>
 	</#list>	
 	
+	<#if class.update>
 	@RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity<${class.name}DTO> edit(@RequestBody ${class.name}DTO ${class.name?uncap_first}DTO) {
 		${class.name} edited = ${class.name?uncap_first}Service.save${class.name}(${class.name?uncap_first}DTO);
 		return new ResponseEntity<>(${class.name?uncap_first}Converter.entityToDto(edited), HttpStatus.OK);
 	}
+	</#if>
 }

@@ -16,6 +16,11 @@ public class FMClass extends FMType {
 	//list of packages (for import declarations) 
 	private List<String> importedPackages = new ArrayList<String>();
 	
+
+	private Boolean create = true;
+	private Boolean delete = true;
+	private Boolean update = true;
+	private Boolean read = true;
 	private boolean isAbstract;
 	/** @ToDo: add list of methods */
 	
@@ -73,6 +78,38 @@ public class FMClass extends FMType {
 	public void setAbstract(boolean isAbstract) {
 		this.isAbstract = isAbstract;
 	}	
+	
+	public Boolean getCreate() {
+		return create;
+	}
+
+	public void setCreate(Boolean create) {
+		this.create = create;
+	}
+
+	public Boolean getDelete() {
+		return delete;
+	}
+
+	public void setDelete(Boolean delete) {
+		this.delete = delete;
+	}
+
+	public Boolean getUpdate() {
+		return update;
+	}
+
+	public void setUpdate(Boolean update) {
+		this.update = update;
+	}
+
+	public Boolean getRead() {
+		return read;
+	}
+
+	public void setRead(Boolean read) {
+		this.read = read;
+	}
 
 	
 	
